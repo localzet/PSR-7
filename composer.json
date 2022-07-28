@@ -35,7 +35,7 @@
             "localzet\\PSR\\": "src/"
         },
         "files": [
-            "src/functions_include.php"
+            "src/PSR7/functions_include.php"
         ]
     },
     "extra": {
