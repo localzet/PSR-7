@@ -51,7 +51,7 @@ class StreamWrapper
                 . 'writable, or both.');
         }
 
-        return fopen('guzzle://stream', $mode, false, self::createStreamContext($stream));
+        return fopen('guzzle://stream', $mode, null, self::createStreamContext($stream));
     }
 
     /**
@@ -121,7 +121,7 @@ class StreamWrapper
 
     public function stream_cast($cast_as)
     {
-        $stream = clone ($this->stream);
+        $stream = clone($this->stream);
 
         return $stream->detach();
     }
