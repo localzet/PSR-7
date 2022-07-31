@@ -1,20 +1,8 @@
 <?php
 
-/**
- * @package     PSR Http Message
- * @link        https://localzet.gitbook.io
- * 
- * @author      localzet <creator@localzet.ru>
- * 
- * @copyright   Copyright (c) 2018-2020 Zorin Projects 
- * @copyright   Copyright (c) 2020-2022 NONA Team
- * 
- * @license     https://www.localzet.ru/license GNU GPLv3 License
- */
+namespace localzet\Core\Psr7;
 
-namespace localzet\PSR\PSR7;
-
-final class RFC7230
+final class Rfc7230
 {
     /**
      * Header related regular expressions (copied from amphp/http package)

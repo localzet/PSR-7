@@ -1,18 +1,5 @@
 <?php
-
-/**
- * @package     PSR Http Message
- * @link        https://localzet.gitbook.io
- * 
- * @author      localzet <creator@localzet.ru>
- * 
- * @copyright   Copyright (c) 2018-2020 Zorin Projects 
- * @copyright   Copyright (c) 2020-2022 NONA Team
- * 
- * @license     https://www.localzet.ru/license GNU GPLv3 License
- */
-
-namespace localzet\PSR\PSR7;
+namespace localzet\Core\Psr7;
 
 use Psr\Http\Message\UriInterface;
 
@@ -133,7 +120,7 @@ class Uri implements UriInterface
             $uri .= $scheme . ':';
         }
 
-        if ($authority != '' || $scheme === 'file') {
+        if ($authority != ''|| $scheme === 'file') {
             $uri .= '//' . $authority;
         }
 
@@ -705,10 +692,10 @@ class Uri implements UriInterface
         } elseif (isset($this->path[0]) && $this->path[0] !== '/') {
             @trigger_error(
                 'The path of a URI with an authority must start with a slash "/" or be empty. Automagically fixing the URI ' .
-                    'by adding a leading slash to the path is deprecated since version 1.4 and will throw an exception instead.',
+                'by adding a leading slash to the path is deprecated since version 1.4 and will throw an exception instead.',
                 E_USER_DEPRECATED
             );
-            $this->path = '/' . $this->path;
+            $this->path = '/'. $this->path;
             //throw new \InvalidArgumentException('The path of a URI with an authority must start with a slash "/" or be empty');
         }
     }

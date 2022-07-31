@@ -1,18 +1,5 @@
 <?php
-
-/**
- * @package     PSR Http Message
- * @link        https://localzet.gitbook.io
- * 
- * @author      localzet <creator@localzet.ru>
- * 
- * @copyright   Copyright (c) 2018-2020 Zorin Projects 
- * @copyright   Copyright (c) 2020-2022 NONA Team
- * 
- * @license     https://www.localzet.ru/license GNU GPLv3 License
- */
-
-namespace localzet\PSR\PSR7;
+namespace localzet\Core\Psr7;
 
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\RequestInterface;
@@ -32,7 +19,7 @@ function str(MessageInterface $message)
 {
     if ($message instanceof RequestInterface) {
         $msg = trim($message->getMethod() . ' '
-            . $message->getRequestTarget())
+                . $message->getRequestTarget())
             . ' HTTP/' . $message->getProtocolVersion();
         if (!$message->hasHeader('host')) {
             $msg .= "\r\nHost: " . $message->getUri()->getHost();
@@ -60,7 +47,7 @@ function response_to_string(ResponseInterface $message)
     $headers = $message->getHeaders();
     if (empty($headers)) {
         $msg .= "\r\nContent-Length: " . $message->getBody()->getSize() .
-            "\r\nContent-Type: text/html\r\nConnection: keep-alive\r\nServer: workerman";
+            "\r\nContent-Type: text/html\r\nConnection: keep-alive\r\nServer: WebCore Server";
     } else {
         if ('' === $message->getHeaderLine('Transfer-Encoding') && '' === $message->getHeaderLine('Content-Length')) {
             $msg .= "\r\nContent-Length: " . $message->getBody()->getSize();
@@ -72,7 +59,7 @@ function response_to_string(ResponseInterface $message)
             $msg .= "\r\nConnection: keep-alive";
         }
         if ('' === $message->getHeaderLine('Server')) {
-            $msg .= "\r\nServer: workerman";
+            $msg .= "\r\nServer: WebCore Server";
         }
         foreach ($headers as $name => $values) {
             $msg .= "\r\n{$name}: " . implode(', ', $values);
@@ -260,7 +247,7 @@ function modify_request(RequestInterface $request, array $changes)
                 $standardPorts = ['http' => 80, 'https' => 443];
                 $scheme = $changes['uri']->getScheme();
                 if (isset($standardPorts[$scheme]) && $port != $standardPorts[$scheme]) {
-                    $changes['set_headers']['Host'] .= ':' . $port;
+                    $changes['set_headers']['Host'] .= ':'.$port;
                 }
             }
         }
@@ -581,9 +568,7 @@ function parse_query($str, $urlEncoding = true)
     } elseif ($urlEncoding === PHP_QUERY_RFC1738) {
         $decoder = 'urldecode';
     } else {
-        $decoder = function ($str) {
-            return $str;
-        };
+        $decoder = function ($str) { return $str; };
     }
 
     foreach (explode('&', $str) as $kvp) {
@@ -623,9 +608,7 @@ function build_query(array $params, $encoding = PHP_QUERY_RFC3986)
     }
 
     if ($encoding === false) {
-        $encoder = function ($str) {
-            return $str;
-        };
+        $encoder = function ($str) { return $str; };
     } elseif ($encoding === PHP_QUERY_RFC3986) {
         $encoder = 'rawurlencode';
     } elseif ($encoding === PHP_QUERY_RFC1738) {
@@ -825,16 +808,16 @@ function _parse_message($message)
 
     if (preg_match("/(?:^HTTP\/|^[A-Z]+ \S+ HTTP\/)(\d+(?:\.\d+)?)/i", $startLine, $matches) && $matches[1] === '1.0') {
         // Header folding is deprecated for HTTP/1.1, but allowed in HTTP/1.0
-        $rawHeaders = preg_replace(RFC7230::HEADER_FOLD_REGEX, ' ', $rawHeaders);
+        $rawHeaders = preg_replace(Rfc7230::HEADER_FOLD_REGEX, ' ', $rawHeaders);
     }
 
     /** @var array[] $headerLines */
-    $count = preg_match_all(RFC7230::HEADER_REGEX, $rawHeaders, $headerLines, PREG_SET_ORDER);
+    $count = preg_match_all(Rfc7230::HEADER_REGEX, $rawHeaders, $headerLines, PREG_SET_ORDER);
 
     // If these aren't the same, then one line didn't match and there's an invalid header.
     if ($count !== substr_count($rawHeaders, "\n")) {
         // Folding is deprecated, see https://tools.ietf.org/html/rfc7230#section-3.2.4
-        if (preg_match(RFC7230::HEADER_FOLD_REGEX, $rawHeaders)) {
+        if (preg_match(Rfc7230::HEADER_FOLD_REGEX, $rawHeaders)) {
             throw new \InvalidArgumentException('Invalid header syntax: Obsolete line folding');
         }
 

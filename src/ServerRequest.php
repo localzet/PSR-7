@@ -1,25 +1,13 @@
 <?php
 
-/**
- * @package     PSR Http Message
- * @link        https://localzet.gitbook.io
- * 
- * @author      localzet <creator@localzet.ru>
- * 
- * @copyright   Copyright (c) 2018-2020 Zorin Projects 
- * @copyright   Copyright (c) 2020-2022 NONA Team
- * 
- * @license     https://www.localzet.ru/license GNU GPLv3 License
- */
-
-namespace localzet\PSR\PSR7;
+namespace localzet\Core\Psr7;
 
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
-use localzet\Core\Protocols\Http\Request as WebRequest;
+use localzet\Core\Protocols\Http\Request as WebCoreRequest;
 
 /**
  * Server-side HTTP request
@@ -72,7 +60,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      * @param string $http_buffer
      */
     public function __construct($http_buffer) {
-        $request = new WebRequest($http_buffer);
+        $request = new WebCoreRequest($http_buffer);
         $this->serverParams = $_SERVER;
         $this->uploadedFiles = $request->file();
         $this->queryParams = $request->get();

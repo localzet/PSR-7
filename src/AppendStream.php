@@ -1,18 +1,5 @@
 <?php
-
-/**
- * @package     PSR Http Message
- * @link        https://localzet.gitbook.io
- * 
- * @author      localzet <creator@localzet.ru>
- * 
- * @copyright   Copyright (c) 2018-2020 Zorin Projects 
- * @copyright   Copyright (c) 2020-2022 NONA Team
- * 
- * @license     https://www.localzet.ru/license GNU GPLv3 License
- */
-
-namespace localzet\PSR\PSR7;
+namespace localzet\Core\Psr7;
 
 use Psr\Http\Message\StreamInterface;
 
@@ -145,7 +132,7 @@ class AppendStream implements StreamInterface
     {
         return !$this->streams ||
             ($this->current >= count($this->streams) - 1 &&
-                $this->streams[$this->current]->eof());
+             $this->streams[$this->current]->eof());
     }
 
     public function rewind()

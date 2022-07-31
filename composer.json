@@ -33,7 +33,7 @@
     },
     "autoload": {
         "psr-4": {
-            "localzet\\PSR\\": "src/"
+            "localzet\\Core\\Psr7\\": "src/"
         },
         "files": [
             "src/PSR7/functions_include.php"
