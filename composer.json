@@ -1,6 +1,6 @@
 {
-    "name": "localzet/psr",
-    "description": "PSR Classes",
+    "name": "localzet/psr7",
+    "description": "HTTP message interfaces",
     "type": "library",
     "keywords": [
         "localzet"
@@ -36,7 +36,7 @@
             "localzet\\Core\\Psr7\\": "src/"
         },
         "files": [
-            "src/PSR7/functions_include.php"
+            "src/functions_include.php"
         ]
     },
     "extra": {
