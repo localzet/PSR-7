@@ -1,6 +1,31 @@
 <?php
-namespace localzet\Core\Psr7;
 
+/**
+ * @package     PSR-7 (Localzet Version)
+ * @link        https://github.com/localzet/PSR-7
+ *
+ * @author      Ivan Zorin <creator@localzet.com>
+ * @copyright   Copyright (c) 2018-2023 Localzet Group
+ * @license     https://www.gnu.org/licenses/agpl AGPL-3.0 license
+ *
+ *              This program is free software: you can redistribute it and/or modify
+ *              it under the terms of the GNU Affero General Public License as
+ *              published by the Free Software Foundation, either version 3 of the
+ *              License, or (at your option) any later version.
+ *
+ *              This program is distributed in the hope that it will be useful,
+ *              but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *              MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *              GNU Affero General Public License for more details.
+ *
+ *              You should have received a copy of the GNU Affero General Public License
+ *              along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+namespace localzet\PSR7;
+
+use BadMethodCallException;
+use LogicException;
 use Psr\Http\Message\StreamInterface;
 
 /**
@@ -34,11 +59,11 @@ class FnStream implements StreamInterface
 
     /**
      * Lazily determine which methods are not implemented.
-     * @throws \BadMethodCallException
+     * @throws BadMethodCallException
      */
     public function __get($name)
     {
-        throw new \BadMethodCallException(str_replace('_fn_', '', $name)
+        throw new BadMethodCallException(str_replace('_fn_', '', $name)
             . '() is not implemented in the FnStream');
     }
 
@@ -54,23 +79,23 @@ class FnStream implements StreamInterface
 
     /**
      * An unserialize would allow the __destruct to run when the unserialized value goes out of scope.
-     * @throws \LogicException
+     * @throws LogicException
      */
     public function __wakeup()
     {
-        throw new \LogicException('FnStream should never be unserialized');
+        throw new LogicException('FnStream should never be unserialized');
     }
 
     /**
      * Adds custom functionality to an underlying stream by intercepting
      * specific method calls.
      *
-     * @param StreamInterface $stream  Stream to decorate
-     * @param array           $methods Hash of method name to a closure
+     * @param StreamInterface $stream Stream to decorate
+     * @param array $methods Hash of method name to a closure
      *
      * @return FnStream
      */
-    public static function decorate(StreamInterface $stream, array $methods)
+    public static function decorate(StreamInterface $stream, array $methods): FnStream
     {
         // If any of the required methods were not provided, then simply
         // proxy to the decorated stream.
@@ -116,12 +141,12 @@ class FnStream implements StreamInterface
         return call_user_func($this->_fn_isSeekable);
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         call_user_func($this->_fn_rewind);
     }
 
-    public function seek($offset, $whence = SEEK_SET)
+    public function seek($offset, $whence = SEEK_SET): void
     {
         call_user_func($this->_fn_seek, $offset, $whence);
     }

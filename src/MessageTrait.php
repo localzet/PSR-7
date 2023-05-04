@@ -1,5 +1,28 @@
 <?php
-namespace localzet\Core\Psr7;
+
+/**
+ * @package     PSR-7 (Localzet Version)
+ * @link        https://github.com/localzet/PSR-7
+ *
+ * @author      Ivan Zorin <creator@localzet.com>
+ * @copyright   Copyright (c) 2018-2023 Localzet Group
+ * @license     https://www.gnu.org/licenses/agpl AGPL-3.0 license
+ *
+ *              This program is free software: you can redistribute it and/or modify
+ *              it under the terms of the GNU Affero General Public License as
+ *              published by the Free Software Foundation, either version 3 of the
+ *              License, or (at your option) any later version.
+ *
+ *              This program is distributed in the hope that it will be useful,
+ *              but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *              MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *              GNU Affero General Public License for more details.
+ *
+ *              You should have received a copy of the GNU Affero General Public License
+ *              along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+namespace localzet\PSR7;
 
 use Psr\Http\Message\StreamInterface;
 
@@ -9,23 +32,23 @@ use Psr\Http\Message\StreamInterface;
 trait MessageTrait
 {
     /** @var array Map of all registered headers, as original name => array of values */
-    private $headers = [];
+    private array $headers = [];
 
     /** @var array Map of lowercase header name => original name at registration */
-    private $headerNames  = [];
+    private array $headerNames = [];
 
     /** @var string */
-    private $protocol = '1.1';
+    private string $protocol = '1.1';
 
     /** @var StreamInterface */
-    private $stream;
+    private StreamInterface $stream;
 
-    public function getProtocolVersion()
+    public function getProtocolVersion(): string
     {
         return $this->protocol;
     }
 
-    public function withProtocolVersion($version)
+    public function withProtocolVersion($version): static
     {
         if ($this->protocol === $version) {
             return $this;
@@ -35,12 +58,12 @@ trait MessageTrait
         return $this;
     }
 
-    public function getHeaders()
+    public function getHeaders(): array
     {
         return $this->headers;
     }
 
-    public function hasHeader($header)
+    public function hasHeader($header): bool
     {
         return isset($this->headerNames[strtolower($header)]);
     }
@@ -58,12 +81,12 @@ trait MessageTrait
         return $this->headers[$header];
     }
 
-    public function getHeaderLine($header)
+    public function getHeaderLine($header): string
     {
         return implode(', ', $this->getHeader($header));
     }
 
-    public function withHeader($header, $value)
+    public function withHeader($header, $value): static
     {
         if (!is_array($value)) {
             $value = [$value];
@@ -81,7 +104,7 @@ trait MessageTrait
         return $this;
     }
 
-    public function withHeaders(array $headers)
+    public function withHeaders(array $headers): static
     {
         foreach ($headers as $header => $value) {
             if (!is_array($value)) {
@@ -101,7 +124,7 @@ trait MessageTrait
         return $this;
     }
 
-    public function withAddedHeader($header, $value)
+    public function withAddedHeader($header, $value): static
     {
         if (!is_array($value)) {
             $value = [$value];
@@ -121,7 +144,7 @@ trait MessageTrait
         return $this;
     }
 
-    public function withoutHeader($header)
+    public function withoutHeader($header): static
     {
         $normalized = strtolower($header);
 
@@ -136,16 +159,16 @@ trait MessageTrait
         return $this;
     }
 
-    public function getBody()
+    public function getBody(): StreamInterface|Stream|PumpStream
     {
         if (!$this->stream) {
-            $this->stream = stream_for('');
+            $this->stream = stream_for();
         }
 
         return $this->stream;
     }
 
-    public function withBody(StreamInterface $body)
+    public function withBody(StreamInterface $body): static
     {
         if ($body === $this->stream) {
             return $this;
@@ -155,7 +178,7 @@ trait MessageTrait
         return $this;
     }
 
-    public function setHeaders(array $headers)
+    public function setHeaders(array $headers): Response|Request
     {
         return $this->withHeaders($headers);
     }
@@ -174,7 +197,7 @@ trait MessageTrait
      *
      * @see https://tools.ietf.org/html/rfc7230#section-3.2.4
      */
-    private function trimHeaderValues(array $values)
+    private function trimHeaderValues(array $values): array
     {
         return array_map(function ($value) {
             return trim($value, " \t");

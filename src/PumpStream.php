@@ -1,7 +1,32 @@
 <?php
-namespace localzet\Core\Psr7;
 
+/**
+ * @package     PSR-7 (Localzet Version)
+ * @link        https://github.com/localzet/PSR-7
+ *
+ * @author      Ivan Zorin <creator@localzet.com>
+ * @copyright   Copyright (c) 2018-2023 Localzet Group
+ * @license     https://www.gnu.org/licenses/agpl AGPL-3.0 license
+ *
+ *              This program is free software: you can redistribute it and/or modify
+ *              it under the terms of the GNU Affero General Public License as
+ *              published by the Free Software Foundation, either version 3 of the
+ *              License, or (at your option) any later version.
+ *
+ *              This program is distributed in the hope that it will be useful,
+ *              but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *              MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *              GNU Affero General Public License for more details.
+ *
+ *              You should have received a copy of the GNU Affero General Public License
+ *              along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+namespace localzet\PSR7;
+
+use Exception;
 use Psr\Http\Message\StreamInterface;
+use RuntimeException;
 
 /**
  * Provides a read only stream that pumps data from a PHP callable.
@@ -19,7 +44,7 @@ class PumpStream implements StreamInterface
     private $source;
 
     /** @var int */
-    private $size;
+    private mixed $size;
 
     /** @var int */
     private $tellPos = 0;
@@ -36,15 +61,15 @@ class PumpStream implements StreamInterface
      *                         amount of data to return. The callable MUST
      *                         return a string when called, or false on error
      *                         or EOF.
-     * @param array $options   Stream options:
+     * @param array $options Stream options:
      *                         - metadata: Hash of metadata to use with stream.
      *                         - size: Size of the stream, if known.
      */
     public function __construct(callable $source, array $options = [])
     {
         $this->source = $source;
-        $this->size = isset($options['size']) ? $options['size'] : null;
-        $this->metadata = isset($options['metadata']) ? $options['metadata'] : [];
+        $this->size = $options['size'] ?? null;
+        $this->metadata = $options['metadata'] ?? [];
         $this->buffer = new BufferStream();
     }
 
@@ -52,7 +77,7 @@ class PumpStream implements StreamInterface
     {
         try {
             return copy_to_string($this);
-        } catch (\Exception $e) {
+        } catch (Exception) {
             return '';
         }
     }
@@ -95,7 +120,7 @@ class PumpStream implements StreamInterface
 
     public function seek($offset, $whence = SEEK_SET)
     {
-        throw new \RuntimeException('Cannot seek a PumpStream');
+        throw new RuntimeException('Cannot seek a PumpStream');
     }
 
     public function isWritable()
@@ -105,7 +130,7 @@ class PumpStream implements StreamInterface
 
     public function write($string)
     {
-        throw new \RuntimeException('Cannot write to a PumpStream');
+        throw new RuntimeException('Cannot write to a PumpStream');
     }
 
     public function isReadable()
@@ -145,7 +170,7 @@ class PumpStream implements StreamInterface
             return $this->metadata;
         }
 
-        return isset($this->metadata[$key]) ? $this->metadata[$key] : null;
+        return $this->metadata[$key] ?? null;
     }
 
     private function pump($length)

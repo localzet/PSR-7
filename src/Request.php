@@ -1,5 +1,28 @@
 <?php
-namespace localzet\Core\Psr7;
+
+/**
+ * @package     PSR-7 (Localzet Version)
+ * @link        https://github.com/localzet/PSR-7
+ *
+ * @author      Ivan Zorin <creator@localzet.com>
+ * @copyright   Copyright (c) 2018-2023 Localzet Group
+ * @license     https://www.gnu.org/licenses/agpl AGPL-3.0 license
+ *
+ *              This program is free software: you can redistribute it and/or modify
+ *              it under the terms of the GNU Affero General Public License as
+ *              published by the Free Software Foundation, either version 3 of the
+ *              License, or (at your option) any later version.
+ *
+ *              This program is distributed in the hope that it will be useful,
+ *              but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *              MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *              GNU Affero General Public License for more details.
+ *
+ *              You should have received a copy of the GNU Affero General Public License
+ *              along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+namespace localzet\PSR7;
 
 use InvalidArgumentException;
 use Psr\Http\Message\RequestInterface;
@@ -14,28 +37,29 @@ class Request implements RequestInterface
     use MessageTrait;
 
     /** @var string */
-    private $method;
+    private string $method;
 
     /** @var null|string */
-    private $requestTarget;
+    private ?string $requestTarget;
 
-    /** @var UriInterface */
-    private $uri;
+    /** @var string|Uri|UriInterface */
+    private string|Uri|UriInterface $uri;
 
     /**
-     * @param string                               $method  HTTP method
-     * @param string|UriInterface                  $uri     URI
-     * @param array                                $headers Request headers
-     * @param string|null|resource|StreamInterface $body    Request body
-     * @param string                               $version Protocol version
+     * @param string $method HTTP method
+     * @param string|UriInterface $uri URI
+     * @param array $headers Request headers
+     * @param string|StreamInterface|null $body Request body
+     * @param string $version Protocol version
      */
     public function __construct(
-        $method,
-        $uri,
-        array $headers = [],
-        $body = null,
-        $version = '1.1'
-    ) {
+        string                 $method,
+        UriInterface|string    $uri,
+        array                  $headers = [],
+        StreamInterface|string $body = null,
+        string                 $version = '1.1'
+    )
+    {
         if (!($uri instanceof UriInterface)) {
             $uri = new Uri($uri);
         }
@@ -54,7 +78,7 @@ class Request implements RequestInterface
         }
     }
 
-    public function getRequestTarget()
+    public function getRequestTarget(): ?string
     {
         if ($this->requestTarget !== null) {
             return $this->requestTarget;
@@ -71,7 +95,7 @@ class Request implements RequestInterface
         return $target;
     }
 
-    public function withRequestTarget($requestTarget)
+    public function withRequestTarget($requestTarget): Request|static
     {
         if (preg_match('#\s#', $requestTarget)) {
             throw new InvalidArgumentException(
@@ -83,23 +107,23 @@ class Request implements RequestInterface
         return $this;
     }
 
-    public function getMethod()
+    public function getMethod(): string
     {
         return $this->method;
     }
 
-    public function withMethod($method)
+    public function withMethod($method): Request|static
     {
         $this->method = strtoupper($method);
         return $this;
     }
 
-    public function getUri()
+    public function getUri(): UriInterface|Uri|string
     {
         return $this->uri;
     }
 
-    public function withUri(UriInterface $uri, $preserveHost = false)
+    public function withUri(UriInterface $uri, $preserveHost = false): Request|static
     {
         if ($uri === $this->uri) {
             return $this;
@@ -114,7 +138,7 @@ class Request implements RequestInterface
         return $this;
     }
 
-    private function updateHostFromUri()
+    private function updateHostFromUri(): void
     {
         $host = $this->uri->getHost();
 

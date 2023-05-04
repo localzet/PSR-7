@@ -1,7 +1,31 @@
 <?php
-namespace localzet\Core\Psr7;
+
+/**
+ * @package     PSR-7 (Localzet Version)
+ * @link        https://github.com/localzet/PSR-7
+ *
+ * @author      Ivan Zorin <creator@localzet.com>
+ * @copyright   Copyright (c) 2018-2023 Localzet Group
+ * @license     https://www.gnu.org/licenses/agpl AGPL-3.0 license
+ *
+ *              This program is free software: you can redistribute it and/or modify
+ *              it under the terms of the GNU Affero General Public License as
+ *              published by the Free Software Foundation, either version 3 of the
+ *              License, or (at your option) any later version.
+ *
+ *              This program is distributed in the hope that it will be useful,
+ *              but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *              MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *              GNU Affero General Public License for more details.
+ *
+ *              You should have received a copy of the GNU Affero General Public License
+ *              along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+namespace localzet\PSR7;
 
 use Psr\Http\Message\StreamInterface;
+use RuntimeException;
 
 /**
  * Provides a buffer stream that can be written to to fill a buffer, and read
@@ -13,8 +37,8 @@ use Psr\Http\Message\StreamInterface;
  */
 class BufferStream implements StreamInterface
 {
-    private $hwm;
-    private $buffer = '';
+    private int $hwm;
+    private string $buffer = '';
 
     /**
      * @param int $hwm High water mark, representing the preferred maximum
@@ -23,7 +47,7 @@ class BufferStream implements StreamInterface
      *                 but will return false to inform writers to slow down
      *                 until the buffer has been drained by reading from it.
      */
-    public function __construct($hwm = 16384)
+    public function __construct(int $hwm = 16384)
     {
         $this->hwm = $hwm;
     }
@@ -33,7 +57,7 @@ class BufferStream implements StreamInterface
         return $this->getContents();
     }
 
-    public function getContents()
+    public function getContents(): string
     {
         $buffer = $this->buffer;
         $this->buffer = '';
@@ -78,7 +102,7 @@ class BufferStream implements StreamInterface
 
     public function seek($offset, $whence = SEEK_SET)
     {
-        throw new \RuntimeException('Cannot seek a BufferStream');
+        throw new RuntimeException('Cannot seek a BufferStream');
     }
 
     public function eof()
@@ -88,7 +112,7 @@ class BufferStream implements StreamInterface
 
     public function tell()
     {
-        throw new \RuntimeException('Cannot determine the position of a BufferStream');
+        throw new RuntimeException('Cannot determine the position of a BufferStream');
     }
 
     /**

@@ -1,5 +1,28 @@
 <?php
-namespace localzet\Core\Psr7;
+
+/**
+ * @package     PSR-7 (Localzet Version)
+ * @link        https://github.com/localzet/PSR-7
+ *
+ * @author      Ivan Zorin <creator@localzet.com>
+ * @copyright   Copyright (c) 2018-2023 Localzet Group
+ * @license     https://www.gnu.org/licenses/agpl AGPL-3.0 license
+ *
+ *              This program is free software: you can redistribute it and/or modify
+ *              it under the terms of the GNU Affero General Public License as
+ *              published by the Free Software Foundation, either version 3 of the
+ *              License, or (at your option) any later version.
+ *
+ *              This program is distributed in the hope that it will be useful,
+ *              but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *              MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *              GNU Affero General Public License for more details.
+ *
+ *              You should have received a copy of the GNU Affero General Public License
+ *              along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+namespace localzet\PSR7;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -12,7 +35,7 @@ class Response implements ResponseInterface
     use MessageTrait;
 
     /** @var array Map of standard HTTP status code/reason phrases */
-    private static $phrases = [
+    private static array $phrases = [
         100 => 'Continue',
         101 => 'Switching Protocols',
         102 => 'Processing',
@@ -74,26 +97,27 @@ class Response implements ResponseInterface
     ];
 
     /** @var string */
-    private $reasonPhrase = '';
+    private mixed $reasonPhrase = '';
 
     /** @var int */
-    private $statusCode = 200;
+    private int $statusCode = 200;
 
     /**
-     * @param int                                  $status  Status code
-     * @param array                                $headers Response headers
-     * @param string|null|resource|StreamInterface $body    Response body
-     * @param string                               $version Protocol version
-     * @param string|null                          $reason  Reason phrase (when empty a default will be used based on the status code)
+     * @param int $status Status code
+     * @param array $headers Response headers
+     * @param string|StreamInterface|null $body Response body
+     * @param string $version Protocol version
+     * @param string|null $reason Reason phrase (when empty a default will be used based on the status code)
      */
     public function __construct(
-        $status = 200,
-        array $headers = [],
-        $body = null,
-        $version = '1.1',
-        $reason = null
-    ) {
-        $this->statusCode = (int) $status;
+        int                    $status = 200,
+        array                  $headers = [],
+        StreamInterface|string $body = null,
+        string                 $version = '1.1',
+        string                 $reason = null
+    )
+    {
+        $this->statusCode = $status;
 
         if ($body !== '' && $body !== null) {
             $this->stream = stream_for($body);
@@ -103,13 +127,13 @@ class Response implements ResponseInterface
         if ($reason == '' && isset(self::$phrases[$this->statusCode])) {
             $this->reasonPhrase = self::$phrases[$this->statusCode];
         } else {
-            $this->reasonPhrase = (string) $reason;
+            $this->reasonPhrase = (string)$reason;
         }
 
         $this->protocol = $version;
     }
 
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return $this->statusCode;
     }
@@ -119,10 +143,10 @@ class Response implements ResponseInterface
         return $this->reasonPhrase;
     }
 
-    public function withStatus($code, $reasonPhrase = '')
+    public function withStatus($code, $reasonPhrase = ''): Response|static
     {
         $new = clone $this;
-        $new->statusCode = (int) $code;
+        $new->statusCode = (int)$code;
         if ($reasonPhrase == '' && isset(self::$phrases[$new->statusCode])) {
             $reasonPhrase = self::$phrases[$new->statusCode];
         }

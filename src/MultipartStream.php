@@ -1,6 +1,30 @@
 <?php
-namespace localzet\Core\Psr7;
 
+/**
+ * @package     PSR-7 (Localzet Version)
+ * @link        https://github.com/localzet/PSR-7
+ *
+ * @author      Ivan Zorin <creator@localzet.com>
+ * @copyright   Copyright (c) 2018-2023 Localzet Group
+ * @license     https://www.gnu.org/licenses/agpl AGPL-3.0 license
+ *
+ *              This program is free software: you can redistribute it and/or modify
+ *              it under the terms of the GNU Affero General Public License as
+ *              published by the Free Software Foundation, either version 3 of the
+ *              License, or (at your option) any later version.
+ *
+ *              This program is distributed in the hope that it will be useful,
+ *              but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *              MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *              GNU Affero General Public License for more details.
+ *
+ *              You should have received a copy of the GNU Affero General Public License
+ *              along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+namespace localzet\PSR7;
+
+use InvalidArgumentException;
 use Psr\Http\Message\StreamInterface;
 
 /**
@@ -14,7 +38,7 @@ class MultipartStream implements StreamInterface
     private $boundary;
 
     /**
-     * @param array  $elements Array of associative arrays, each containing a
+     * @param array $elements Array of associative arrays, each containing a
      *                         required "name" key mapping to the form field,
      *                         name, a required "contents" key mapping to a
      *                         StreamInterface/resource/string, an optional
@@ -23,7 +47,7 @@ class MultipartStream implements StreamInterface
      *                         string to send as the filename in the part.
      * @param string $boundary You can optionally provide a specific boundary
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct(array $elements = [], $boundary = null)
     {
@@ -41,7 +65,7 @@ class MultipartStream implements StreamInterface
         return $this->boundary;
     }
 
-    public function isWritable()
+    public function isWritable(): false
     {
         return false;
     }
@@ -53,7 +77,7 @@ class MultipartStream implements StreamInterface
     {
         $str = '';
         foreach ($headers as $key => $value) {
-            $str .= "{$key}: {$value}\r\n";
+            $str .= "$key: $value\r\n";
         }
 
         return "--{$this->boundary}\r\n" . trim($str) . "\r\n\r\n";
@@ -80,7 +104,7 @@ class MultipartStream implements StreamInterface
     {
         foreach (['contents', 'name'] as $key) {
             if (!array_key_exists($key, $element)) {
-                throw new \InvalidArgumentException("A '{$key}' key is required");
+                throw new InvalidArgumentException("A '{$key}' key is required");
             }
         }
 
@@ -88,7 +112,7 @@ class MultipartStream implements StreamInterface
 
         if (empty($element['filename'])) {
             $uri = $element['contents']->getMetadata('uri');
-            if (substr($uri, 0, 6) !== 'php://') {
+            if (!str_starts_with($uri, 'php://')) {
                 $element['filename'] = $uri;
             }
         }
@@ -96,8 +120,8 @@ class MultipartStream implements StreamInterface
         list($body, $headers) = $this->createElement(
             $element['name'],
             $element['contents'],
-            isset($element['filename']) ? $element['filename'] : null,
-            isset($element['headers']) ? $element['headers'] : []
+            $element['filename'] ?? null,
+            $element['headers'] ?? []
         );
 
         $stream->addStream(stream_for($this->getHeaders($headers)));
@@ -117,14 +141,14 @@ class MultipartStream implements StreamInterface
                 ? sprintf('form-data; name="%s"; filename="%s"',
                     $name,
                     basename($filename))
-                : "form-data; name=\"{$name}\"";
+                : "form-data; name=\"$name\"";
         }
 
         // Set a default content-length header if one was no provided
         $length = $this->getHeader($headers, 'content-length');
         if (!$length) {
             if ($length = $stream->getSize()) {
-                $headers['Content-Length'] = (string) $length;
+                $headers['Content-Length'] = (string)$length;
             }
         }
 

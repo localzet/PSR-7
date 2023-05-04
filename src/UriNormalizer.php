@@ -1,11 +1,35 @@
 <?php
-namespace localzet\Core\Psr7;
+
+/**
+ * @package     PSR-7 (Localzet Version)
+ * @link        https://github.com/localzet/PSR-7
+ *
+ * @author      Ivan Zorin <creator@localzet.com>
+ * @copyright   Copyright (c) 2018-2023 Localzet Group
+ * @license     https://www.gnu.org/licenses/agpl AGPL-3.0 license
+ *
+ *              This program is free software: you can redistribute it and/or modify
+ *              it under the terms of the GNU Affero General Public License as
+ *              published by the Free Software Foundation, either version 3 of the
+ *              License, or (at your option) any later version.
+ *
+ *              This program is distributed in the hope that it will be useful,
+ *              but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *              MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *              GNU Affero General Public License for more details.
+ *
+ *              You should have received a copy of the GNU Affero General Public License
+ *              along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+namespace localzet\PSR7;
 
 use Psr\Http\Message\UriInterface;
 
 /**
  * Provides methods to normalize and compare URIs.
  *
+ * @author Ivan Zorin
  * @author Tobias Schultze
  *
  * @link https://tools.ietf.org/html/rfc3986#section-6
@@ -110,13 +134,13 @@ final class UriNormalizer
      * treated equivalent which is not necessarily true according to RFC 3986. But that difference
      * is highly uncommon in reality. So this potential normalization is implied in PSR-7 as well.
      *
-     * @param UriInterface $uri   The URI to normalize
-     * @param int          $flags A bitmask of normalizations to apply, see constants
+     * @param UriInterface $uri The URI to normalize
+     * @param int $flags A bitmask of normalizations to apply, see constants
      *
      * @return UriInterface The normalized URI
      * @link https://tools.ietf.org/html/rfc3986#section-6.2
      */
-    public static function normalize(UriInterface $uri, $flags = self::PRESERVING_NORMALIZATIONS)
+    public static function normalize(UriInterface $uri, int $flags = self::PRESERVING_NORMALIZATIONS): UriInterface
     {
         if ($flags & self::CAPITALIZE_PERCENT_ENCODING) {
             $uri = self::capitalizePercentEncoding($uri);
@@ -165,19 +189,19 @@ final class UriNormalizer
      * resolved against the same base URI. If this is not the case, determination of equivalence or difference of
      * relative references does not mean anything.
      *
-     * @param UriInterface $uri1           An URI to compare
-     * @param UriInterface $uri2           An URI to compare
-     * @param int          $normalizations A bitmask of normalizations to apply, see constants
+     * @param UriInterface $uri1 An URI to compare
+     * @param UriInterface $uri2 An URI to compare
+     * @param int $normalizations A bitmask of normalizations to apply, see constants
      *
      * @return bool
      * @link https://tools.ietf.org/html/rfc3986#section-6.1
      */
-    public static function isEquivalent(UriInterface $uri1, UriInterface $uri2, $normalizations = self::PRESERVING_NORMALIZATIONS)
+    public static function isEquivalent(UriInterface $uri1, UriInterface $uri2, int $normalizations = self::PRESERVING_NORMALIZATIONS): bool
     {
-        return (string) self::normalize($uri1, $normalizations) === (string) self::normalize($uri2, $normalizations);
+        return (string)self::normalize($uri1, $normalizations) === (string)self::normalize($uri2, $normalizations);
     }
 
-    private static function capitalizePercentEncoding(UriInterface $uri)
+    private static function capitalizePercentEncoding(UriInterface $uri): UriInterface
     {
         $regex = '/(?:%[A-Fa-f0-9]{2})++/';
 
@@ -193,7 +217,7 @@ final class UriNormalizer
             );
     }
 
-    private static function decodeUnreservedCharacters(UriInterface $uri)
+    private static function decodeUnreservedCharacters(UriInterface $uri): UriInterface
     {
         $regex = '/%(?:2D|2E|5F|7E|3[0-9]|[46][1-9A-F]|[57][0-9A])/i';
 
