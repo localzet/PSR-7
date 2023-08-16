@@ -25,10 +25,10 @@
 namespace localzet\PSR7;
 
 use InvalidArgumentException;
+use localzet\PSR\Http\Message\ServerRequestInterface;
+use localzet\PSR\Http\Message\UploadedFileInterface;
+use localzet\PSR\Http\Message\UriInterface;
 use localzet\Server\Protocols\Http\Request as WebCoreRequest;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\UploadedFileInterface;
-use Psr\Http\Message\UriInterface;
 
 /**
  * Server-side HTTP request
@@ -253,7 +253,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     /**
      * {@inheritdoc}
      */
-    public function getUploadedFiles(): ?array
+    public function getUploadedFiles(): array
     {
         return $this->uploadedFiles;
     }
@@ -272,7 +272,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     /**
      * {@inheritdoc}
      */
-    public function getCookieParams()
+    public function getCookieParams(): array
     {
         return $this->cookieParams;
     }
@@ -291,7 +291,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     /**
      * {@inheritdoc}
      */
-    public function getQueryParams()
+    public function getQueryParams(): array
     {
         return $this->queryParams;
     }
@@ -337,22 +337,22 @@ class ServerRequest extends Request implements ServerRequestInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttribute($attribute, $default = null)
+    public function getAttribute($name, $default = null)
     {
-        if (false === array_key_exists($attribute, $this->attributes)) {
+        if (false === array_key_exists($name, $this->attributes)) {
             return $default;
         }
 
-        return $this->attributes[$attribute];
+        return $this->attributes[$name];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function withAttribute($attribute, $value): ServerRequest|ServerRequestInterface|static
+    public function withAttribute($name, $value): ServerRequest|ServerRequestInterface|static
     {
         $new = clone $this;
-        $new->attributes[$attribute] = $value;
+        $new->attributes[$name] = $value;
 
         return $new;
     }
@@ -360,14 +360,14 @@ class ServerRequest extends Request implements ServerRequestInterface
     /**
      * {@inheritdoc}
      */
-    public function withoutAttribute($attribute): ServerRequest|ServerRequestInterface|static
+    public function withoutAttribute($name): ServerRequest|ServerRequestInterface|static
     {
-        if (false === array_key_exists($attribute, $this->attributes)) {
+        if (false === array_key_exists($name, $this->attributes)) {
             return $this;
         }
 
         $new = clone $this;
-        unset($new->attributes[$attribute]);
+        unset($new->attributes[$name]);
 
         return $new;
     }

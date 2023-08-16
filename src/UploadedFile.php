@@ -25,8 +25,8 @@
 namespace localzet\PSR7;
 
 use InvalidArgumentException;
-use Psr\Http\Message\StreamInterface;
-use Psr\Http\Message\UploadedFileInterface;
+use localzet\PSR\Http\Message\StreamInterface;
+use localzet\PSR\Http\Message\UploadedFileInterface;
 use RuntimeException;
 
 class UploadedFile implements UploadedFileInterface
@@ -234,7 +234,7 @@ class UploadedFile implements UploadedFileInterface
      * {@inheritdoc}
      * @throws RuntimeException if the upload was not successful.
      */
-    public function getStream(): StreamInterface|LazyOpenStream|null
+    public function getStream(): StreamInterface
     {
         $this->validateActive();
 

@@ -24,7 +24,7 @@
 
 namespace localzet\PSR7;
 
-use Psr\Http\Message\StreamInterface;
+use localzet\PSR\Http\Message\StreamInterface;
 use RuntimeException;
 
 /**
@@ -34,7 +34,7 @@ class NoSeekStream implements StreamInterface
 {
     use StreamDecoratorTrait;
 
-    public function seek($offset, $whence = SEEK_SET)
+    public function seek($offset, $whence = SEEK_SET): void
     {
         throw new RuntimeException('Cannot seek a NoSeekStream');
     }

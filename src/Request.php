@@ -25,9 +25,9 @@
 namespace localzet\PSR7;
 
 use InvalidArgumentException;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\StreamInterface;
-use Psr\Http\Message\UriInterface;
+use localzet\PSR\Http\Message\RequestInterface;
+use localzet\PSR\Http\Message\StreamInterface;
+use localzet\PSR\Http\Message\UriInterface;
 
 /**
  * PSR-7 request implementation.
@@ -78,7 +78,7 @@ class Request implements RequestInterface
         }
     }
 
-    public function getRequestTarget(): ?string
+    public function getRequestTarget(): string
     {
         if ($this->requestTarget !== null) {
             return $this->requestTarget;
@@ -118,7 +118,7 @@ class Request implements RequestInterface
         return $this;
     }
 
-    public function getUri(): UriInterface|Uri|string
+    public function getUri(): UriInterface
     {
         return $this->uri;
     }

@@ -25,10 +25,10 @@
 namespace localzet\PSR7;
 
 use InvalidArgumentException;
-use Psr\Http\Message\StreamInterface;
+use localzet\PSR\Http\Message\StreamInterface;
 
 /**
- * Converts Guzzle streams into PHP stream resources.
+ * Converts Localzet streams into PHP stream resources.
  */
 class StreamWrapper
 {
@@ -58,11 +58,10 @@ class StreamWrapper
         } elseif ($stream->isWritable()) {
             $mode = 'w';
         } else {
-            throw new InvalidArgumentException('The stream must be readable, '
-                . 'writable, or both.');
+            throw new InvalidArgumentException('The stream must be readable, writable, or both.');
         }
 
-        return fopen('guzzle://stream', $mode, null, self::createStreamContext($stream));
+        return fopen('localzet://stream', $mode, null, self::createStreamContext($stream));
     }
 
     /**
@@ -75,7 +74,7 @@ class StreamWrapper
     public static function createStreamContext(StreamInterface $stream)
     {
         return stream_context_create([
-            'guzzle' => ['stream' => $stream]
+            'localzet' => ['stream' => $stream]
         ]);
     }
 
@@ -84,8 +83,8 @@ class StreamWrapper
      */
     public static function register(): void
     {
-        if (!in_array('guzzle', stream_get_wrappers())) {
-            stream_wrapper_register('guzzle', __CLASS__);
+        if (!in_array('localzet', stream_get_wrappers())) {
+            stream_wrapper_register('localzet', __CLASS__);
         }
     }
 
@@ -93,12 +92,12 @@ class StreamWrapper
     {
         $options = stream_context_get_options($this->context);
 
-        if (!isset($options['guzzle']['stream'])) {
+        if (!isset($options['localzet']['stream'])) {
             return false;
         }
 
         $this->mode = $mode;
-        $this->stream = $options['guzzle']['stream'];
+        $this->stream = $options['localzet']['stream'];
 
         return true;
     }

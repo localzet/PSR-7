@@ -24,7 +24,7 @@
 
 namespace localzet\PSR7;
 
-use Psr\Http\Message\StreamInterface;
+use localzet\PSR\Http\Message\StreamInterface;
 
 /**
  * Uses PHP's zlib.inflate filter to inflate deflate or gzipped content.
@@ -32,7 +32,7 @@ use Psr\Http\Message\StreamInterface;
  * This stream decorator skips the first 10 bytes of the given stream to remove
  * the gzip header, converts the provided stream to a PHP stream resource,
  * then appends the zlib.inflate filter. The stream is then converted back
- * to a Guzzle stream resource to be used as a Guzzle stream.
+ * to a Localzet stream resource to be used as a Localzet stream.
  *
  * @link http://tools.ietf.org/html/rfc1952
  * @link http://php.net/manual/en/filters.compression.php

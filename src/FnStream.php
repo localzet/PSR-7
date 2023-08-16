@@ -25,8 +25,8 @@
 namespace localzet\PSR7;
 
 use BadMethodCallException;
+use localzet\PSR\Http\Message\StreamInterface;
 use LogicException;
-use Psr\Http\Message\StreamInterface;
 
 /**
  * Compose stream implementations based on a hash of functions.
@@ -106,14 +106,14 @@ class FnStream implements StreamInterface
         return new self($methods);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return call_user_func($this->_fn___toString);
     }
 
-    public function close()
+    public function close(): void
     {
-        return call_user_func($this->_fn_close);
+        call_user_func($this->_fn_close);
     }
 
     public function detach()
@@ -121,22 +121,22 @@ class FnStream implements StreamInterface
         return call_user_func($this->_fn_detach);
     }
 
-    public function getSize()
+    public function getSize(): ?int
     {
         return call_user_func($this->_fn_getSize);
     }
 
-    public function tell()
+    public function tell(): int
     {
         return call_user_func($this->_fn_tell);
     }
 
-    public function eof()
+    public function eof(): bool
     {
         return call_user_func($this->_fn_eof);
     }
 
-    public function isSeekable()
+    public function isSeekable(): bool
     {
         return call_user_func($this->_fn_isSeekable);
     }
@@ -151,27 +151,27 @@ class FnStream implements StreamInterface
         call_user_func($this->_fn_seek, $offset, $whence);
     }
 
-    public function isWritable()
+    public function isWritable(): bool
     {
         return call_user_func($this->_fn_isWritable);
     }
 
-    public function write($string)
+    public function write($string): int
     {
         return call_user_func($this->_fn_write, $string);
     }
 
-    public function isReadable()
+    public function isReadable(): bool
     {
         return call_user_func($this->_fn_isReadable);
     }
 
-    public function read($length)
+    public function read($length): string
     {
         return call_user_func($this->_fn_read, $length);
     }
 
-    public function getContents()
+    public function getContents(): string
     {
         return call_user_func($this->_fn_getContents);
     }

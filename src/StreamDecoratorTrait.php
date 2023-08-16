@@ -26,7 +26,7 @@ namespace localzet\PSR7;
 
 use BadMethodCallException;
 use Exception;
-use Psr\Http\Message\StreamInterface;
+use localzet\PSR\Http\Message\StreamInterface;
 use UnexpectedValueException;
 
 /**
@@ -61,7 +61,7 @@ trait StreamDecoratorTrait
         throw new UnexpectedValueException("$name not found on class");
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         try {
             if ($this->isSeekable()) {

@@ -24,7 +24,7 @@
 
 namespace localzet\PSR7;
 
-use Psr\Http\Message\StreamInterface;
+use localzet\PSR\Http\Message\StreamInterface;
 
 /**
  * Stream decorator that begins dropping data once the size of the underlying
@@ -46,7 +46,7 @@ class DroppingStream implements StreamInterface
         $this->maxLength = $maxLength;
     }
 
-    public function write($string)
+    public function write($string): int
     {
         $diff = $this->maxLength - $this->stream->getSize();
 

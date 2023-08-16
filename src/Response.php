@@ -24,8 +24,8 @@
 
 namespace localzet\PSR7;
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamInterface;
+use localzet\PSR\Http\Message\ResponseInterface;
+use localzet\PSR\Http\Message\StreamInterface;
 
 /**
  * PSR-7 response implementation.
@@ -138,7 +138,7 @@ class Response implements ResponseInterface
         return $this->statusCode;
     }
 
-    public function getReasonPhrase()
+    public function getReasonPhrase(): string
     {
         return $this->reasonPhrase;
     }

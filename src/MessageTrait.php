@@ -24,7 +24,8 @@
 
 namespace localzet\PSR7;
 
-use Psr\Http\Message\StreamInterface;
+use localzet\PSR\Http\Message\MessageInterface;
+use localzet\PSR\Http\Message\StreamInterface;
 
 /**
  * Trait implementing functionality common to requests and responses.
@@ -40,15 +41,15 @@ trait MessageTrait
     /** @var string */
     private string $protocol = '1.1';
 
-    /** @var StreamInterface */
-    private StreamInterface $stream;
+    /** @var StreamInterface|null */
+    private ?StreamInterface $stream = null;
 
     public function getProtocolVersion(): string
     {
         return $this->protocol;
     }
 
-    public function withProtocolVersion($version): static
+    public function withProtocolVersion($version): MessageInterface
     {
         if ($this->protocol === $version) {
             return $this;
@@ -68,7 +69,7 @@ trait MessageTrait
         return isset($this->headerNames[strtolower($header)]);
     }
 
-    public function getHeader($header)
+    public function getHeader($header): array
     {
         $header = strtolower($header);
 
@@ -86,7 +87,7 @@ trait MessageTrait
         return implode(', ', $this->getHeader($header));
     }
 
-    public function withHeader($header, $value): static
+    public function withHeader($header, $value): MessageInterface
     {
         if (!is_array($value)) {
             $value = [$value];
@@ -104,7 +105,7 @@ trait MessageTrait
         return $this;
     }
 
-    public function withHeaders(array $headers): static
+    public function withHeaders(array $headers): MessageInterface
     {
         foreach ($headers as $header => $value) {
             if (!is_array($value)) {
@@ -124,7 +125,7 @@ trait MessageTrait
         return $this;
     }
 
-    public function withAddedHeader($header, $value): static
+    public function withAddedHeader($header, $value): MessageInterface
     {
         if (!is_array($value)) {
             $value = [$value];
@@ -144,7 +145,7 @@ trait MessageTrait
         return $this;
     }
 
-    public function withoutHeader($header): static
+    public function withoutHeader($header): MessageInterface
     {
         $normalized = strtolower($header);
 
@@ -168,7 +169,7 @@ trait MessageTrait
         return $this->stream;
     }
 
-    public function withBody(StreamInterface $body): static
+    public function withBody(StreamInterface $body): MessageInterface
     {
         if ($body === $this->stream) {
             return $this;

@@ -26,12 +26,11 @@ namespace localzet\PSR7;
 
 use InvalidArgumentException;
 use Iterator;
-use Psr\Http\Message\MessageInterface;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\StreamInterface;
-use Psr\Http\Message\UriInterface;
+use localzet\PSR\Http\Message\MessageInterface;
+use localzet\PSR\Http\Message\RequestInterface;
+use localzet\PSR\Http\Message\ResponseInterface;
+use localzet\PSR\Http\Message\StreamInterface;
+use localzet\PSR\Http\Message\UriInterface;
 use RuntimeException;
 
 /**
@@ -98,7 +97,7 @@ function response_to_string(ResponseInterface $message): string
 /**
  * Returns a UriInterface for the given value.
  *
- * This function accepts a string or {@see Psr\Http\Message\UriInterface} and
+ * This function accepts a string or {@see localzet\PSR\Http\Message\UriInterface} and
  * returns a UriInterface for the given value. If the value is already a
  * `UriInterface`, it is returned as-is.
  *
@@ -233,82 +232,6 @@ function normalize_header(array|string $header): array
     }
 
     return $result;
-}
-
-/**
- * Clone and modify a request with the given changes.
- *
- * The changes can be one of:
- * - method: (string) Changes the HTTP method.
- * - set_headers: (array) Sets the given headers.
- * - remove_headers: (array) Remove the given headers.
- * - body: (mixed) Sets the given body.
- * - uri: (UriInterface) Set the URI.
- * - query: (string) Set the query string value of the URI.
- * - version: (string) Set the protocol version.
- *
- * @param RequestInterface $request Request to clone and modify.
- * @param array $changes Changes to apply.
- *
- * @return Request|RequestInterface|ServerRequest
- */
-function modify_request(RequestInterface $request, array $changes): Request|RequestInterface|ServerRequest
-{
-    if (!$changes) {
-        return $request;
-    }
-
-    $headers = $request->getHeaders();
-
-    if (!isset($changes['uri'])) {
-        $uri = $request->getUri();
-    } else {
-        // Remove the host header if one is on the URI
-        if ($host = $changes['uri']->getHost()) {
-            $changes['set_headers']['Host'] = $host;
-
-            if ($port = $changes['uri']->getPort()) {
-                $standardPorts = ['http' => 80, 'https' => 443];
-                $scheme = $changes['uri']->getScheme();
-                if (isset($standardPorts[$scheme]) && $port != $standardPorts[$scheme]) {
-                    $changes['set_headers']['Host'] .= ':' . $port;
-                }
-            }
-        }
-        $uri = $changes['uri'];
-    }
-
-    if (!empty($changes['remove_headers'])) {
-        $headers = _caseless_remove($changes['remove_headers'], $headers);
-    }
-
-    if (!empty($changes['set_headers'])) {
-        $headers = _caseless_remove(array_keys($changes['set_headers']), $headers);
-        $headers = $changes['set_headers'] + $headers;
-    }
-
-    if (isset($changes['query'])) {
-        $uri = $uri->withQuery($changes['query']);
-    }
-
-    if ($request instanceof ServerRequestInterface) {
-        return new ServerRequest(
-            $changes['method'] ?? $request->getMethod(),
-            $uri,
-            $headers,
-            $changes['body'] ?? $request->getBody(),
-            $changes['version'] ?? $request->getProtocolVersion(),
-            $request->getServerParams()
-        );
-    }
-
-    return new Request(
-        $changes['method'] ?? $request->getMethod(),
-        $uri,
-        $headers,
-        $changes['body'] ?? $request->getBody(),
-        $changes['version'] ?? $request->getProtocolVersion()
-    );
 }
 
 /**

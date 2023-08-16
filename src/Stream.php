@@ -26,7 +26,7 @@ namespace localzet\PSR7;
 
 use Exception;
 use InvalidArgumentException;
-use Psr\Http\Message\StreamInterface;
+use localzet\PSR\Http\Message\StreamInterface;
 use RuntimeException;
 
 /**
@@ -102,7 +102,7 @@ class Stream implements StreamInterface
         $this->close();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         try {
             $this->seek(0);
@@ -151,7 +151,7 @@ class Stream implements StreamInterface
         return $result;
     }
 
-    public function getSize()
+    public function getSize(): ?int
     {
         if ($this->size !== null) {
             return $this->size;
@@ -185,7 +185,7 @@ class Stream implements StreamInterface
         return $this->writable;
     }
 
-    public function isSeekable()
+    public function isSeekable(): bool
     {
         return $this->seekable;
     }
