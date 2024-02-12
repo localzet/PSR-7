@@ -5,18 +5,19 @@
   "keywords": [
     "localzet"
   ],
-  "license": "GPL-3.0-only",
+  "license": "AGPL-3.0-or-later",
   "authors": [
     {
-      "name": "localzet",
-      "email": "creator@localzet.ru",
-      "homepage": "https://www.localzet.ru",
-      "role": "Developer"
+      "role": "Developer",
+      "name": "Ivan Zorin",
+      "email": "creator@localzet.com",
+      "homepage": "https://github.com/localzet"
     }
   ],
   "support": {
-    "email": "support@localzet.ru",
-    "docs": "https://localzet.gitbook.io"
+    "email": "support@localzet.com",
+    "issues": "https://github.com/localzet/PSR-7/issues",
+    "source": "https://github.com/localzet/PSR-7"
   },
   "require": {
     "php": "^8.2",
