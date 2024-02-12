@@ -18,12 +18,6 @@
     "email": "support@localzet.ru",
     "docs": "https://localzet.gitbook.io"
   },
-  "funding": [
-    {
-      "type": "other",
-      "url": "https://www.tinkoff.ru/cf/Ad5MBNhodod"
-    }
-  ],
   "require": {
     "php": "^8.2",
     "localzet/psr": "^1.0",
