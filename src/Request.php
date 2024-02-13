@@ -25,9 +25,9 @@
 namespace localzet\PSR7;
 
 use InvalidArgumentException;
-use localzet\PSR\Http\Message\RequestInterface;
-use localzet\PSR\Http\Message\StreamInterface;
-use localzet\PSR\Http\Message\UriInterface;
+use  Psr\Http\Message\RequestInterface;
+use  Psr\Http\Message\StreamInterface;
+use  Psr\Http\Message\UriInterface;
 
 /**
  * PSR-7 request implementation.

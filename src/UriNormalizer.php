@@ -24,7 +24,7 @@
 
 namespace localzet\PSR7;
 
-use localzet\PSR\Http\Message\UriInterface;
+use  Psr\Http\Message\UriInterface;
 
 /**
  * Provides methods to normalize and compare URIs.

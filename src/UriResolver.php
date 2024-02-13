@@ -24,7 +24,7 @@
 
 namespace localzet\PSR7;
 
-use localzet\PSR\Http\Message\UriInterface;
+use Psr\Http\Message\UriInterface;
 
 /**
  * Resolves a URI reference in the context of a base URI and the opposite way.

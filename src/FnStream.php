@@ -25,7 +25,7 @@
 namespace localzet\PSR7;
 
 use BadMethodCallException;
-use localzet\PSR\Http\Message\StreamInterface;
+use Psr\Http\Message\StreamInterface;
 use LogicException;
 
 /**

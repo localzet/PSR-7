@@ -24,8 +24,8 @@
 
 namespace localzet\PSR7;
 
-use localzet\PSR\Http\Message\ResponseInterface;
-use localzet\PSR\Http\Message\StreamInterface;
+use  Psr\Http\Message\ResponseInterface;
+use  Psr\Http\Message\StreamInterface;
 
 /**
  * PSR-7 response implementation.

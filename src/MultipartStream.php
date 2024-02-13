@@ -25,7 +25,7 @@
 namespace localzet\PSR7;
 
 use InvalidArgumentException;
-use localzet\PSR\Http\Message\StreamInterface;
+use  Psr\Http\Message\StreamInterface;
 
 /**
  * Stream that when read returns bytes for a streaming multipart or

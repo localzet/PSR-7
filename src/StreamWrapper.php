@@ -25,7 +25,7 @@
 namespace localzet\PSR7;
 
 use InvalidArgumentException;
-use localzet\PSR\Http\Message\StreamInterface;
+use  Psr\Http\Message\StreamInterface;
 
 /**
  * Converts Localzet streams into PHP stream resources.

@@ -25,9 +25,9 @@
 namespace localzet\PSR7;
 
 use InvalidArgumentException;
-use localzet\PSR\Http\Message\ServerRequestInterface;
-use localzet\PSR\Http\Message\UploadedFileInterface;
-use localzet\PSR\Http\Message\UriInterface;
+use  Psr\Http\Message\ServerRequestInterface;
+use  Psr\Http\Message\UploadedFileInterface;
+use  Psr\Http\Message\UriInterface;
 use localzet\Server\Protocols\Http\Request as WebCoreRequest;
 
 /**

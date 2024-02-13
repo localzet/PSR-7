@@ -24,7 +24,7 @@
 
 namespace localzet\PSR7;
 
-use localzet\PSR\Http\Message\StreamInterface;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * Stream decorator that begins dropping data once the size of the underlying

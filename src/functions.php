@@ -26,11 +26,11 @@ namespace localzet\PSR7;
 
 use InvalidArgumentException;
 use Iterator;
-use localzet\PSR\Http\Message\MessageInterface;
-use localzet\PSR\Http\Message\RequestInterface;
-use localzet\PSR\Http\Message\ResponseInterface;
-use localzet\PSR\Http\Message\StreamInterface;
-use localzet\PSR\Http\Message\UriInterface;
+use  Psr\Http\Message\MessageInterface;
+use  Psr\Http\Message\RequestInterface;
+use  Psr\Http\Message\ResponseInterface;
+use  Psr\Http\Message\StreamInterface;
+use  Psr\Http\Message\UriInterface;
 use RuntimeException;
 
 /**
@@ -97,7 +97,7 @@ function response_to_string(ResponseInterface $message): string
 /**
  * Returns a UriInterface for the given value.
  *
- * This function accepts a string or {@see localzet\PSR\Http\Message\UriInterface} and
+ * This function accepts a string or {@see  Psr\Http\Message\UriInterface} and
  * returns a UriInterface for the given value. If the value is already a
  * `UriInterface`, it is returned as-is.
  *

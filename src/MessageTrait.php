@@ -24,8 +24,8 @@
 
 namespace localzet\PSR7;
 
-use localzet\PSR\Http\Message\MessageInterface;
-use localzet\PSR\Http\Message\StreamInterface;
+use  Psr\Http\Message\MessageInterface;
+use  Psr\Http\Message\StreamInterface;
 
 /**
  * Trait implementing functionality common to requests and responses.

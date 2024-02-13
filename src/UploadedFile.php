@@ -25,8 +25,8 @@
 namespace localzet\PSR7;
 
 use InvalidArgumentException;
-use localzet\PSR\Http\Message\StreamInterface;
-use localzet\PSR\Http\Message\UploadedFileInterface;
+use  Psr\Http\Message\StreamInterface;
+use  Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
 
 class UploadedFile implements UploadedFileInterface

@@ -24,7 +24,7 @@
 
 namespace localzet\PSR7;
 
-use localzet\PSR\Http\Message\StreamInterface;
+use  Psr\Http\Message\StreamInterface;
 
 /**
  * Uses PHP's zlib.inflate filter to inflate deflate or gzipped content.

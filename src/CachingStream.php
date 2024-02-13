@@ -25,7 +25,7 @@
 namespace localzet\PSR7;
 
 use InvalidArgumentException;
-use localzet\PSR\Http\Message\StreamInterface;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * Stream decorator that can cache previously read bytes from a sequentially
