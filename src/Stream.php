@@ -36,13 +36,13 @@ use RuntimeException;
  */
 class Stream implements StreamInterface
 {
-    private $stream;
-    private mixed $size;
-    private mixed $seekable;
+    private $stream = null;
+    private mixed $size = null;
+    private mixed $seekable = null;
     private bool $readable;
     private bool $writable;
-    private mixed $uri;
-    private mixed $customMetadata;
+    private mixed $uri = null;
+    private mixed $customMetadata = null;
 
     /** @var array Hash of readable and writable stream types */
     private static array $readWriteHash = [
