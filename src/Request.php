@@ -40,7 +40,7 @@ class Request implements RequestInterface
     private string $method;
 
     /** @var null|string */
-    private ?string $requestTarget;
+    private ?string $requestTarget = null;
 
     /** @var string|Uri|UriInterface */
     private string|Uri|UriInterface $uri;
