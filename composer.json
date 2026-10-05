@@ -1,6 +1,6 @@
 {
   "name": "localzet/psr7",
-  "description": "Localzet PSR7 is a library that provides HTTP message interfaces. Developed by Ivan Zorin, it adheres to the PSR-7 standard for HTTP message interfaces in PHP.",
+  "description": "HTTP message objects, streams and URI utilities.",
   "type": "library",
   "keywords": [
     "HTTP",
