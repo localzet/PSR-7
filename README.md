@@ -8,12 +8,12 @@ HTTP message objects, streams and URI utilities.
 
 Core types live under localzet\PSR7. Installation and autoload checks are not proof of PSR-7 conformance; message immutability, stream behavior, URI encoding and interoperability need a dedicated test suite.
 
-This is a Server 4.x component; Server 7.x compatibility is not established.
+This release targets Localzet Server 7.x.
 
 ## Dependencies
 
 - `php`: `^8.2`
-- `localzet/server`: `^4.1`
+- `localzet/server`: `^7.0`
 - `psr/http-message`: `^2.0`
 
 ## Installation
