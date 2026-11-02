@@ -8,7 +8,7 @@ HTTP message objects, streams and URI utilities.
 
 Core types live under localzet\PSR7. Installation and autoload checks are not proof of PSR-7 conformance; message immutability, stream behavior, URI encoding and interoperability need a dedicated test suite.
 
-This release targets Localzet Server 7.x.
+The current branch targets Localzet Server 7.x; the published stable `v3.0.2` requires Server `^4.1`.
 
 ## Dependencies
 
@@ -19,8 +19,10 @@ This release targets Localzet Server 7.x.
 ## Installation
 
 ```sh
-composer require localzet/psr7
+composer require localzet/psr7:dev-main
 ```
+
+Use the current `dev-main` branch for Server 7. It is not a stable release; do not pin it in production before a compatible tag is published.
 
 ## Development checks
 
