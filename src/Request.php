@@ -105,8 +105,9 @@ class Request implements RequestInterface
             );
         }
 
-        $this->requestTarget = $requestTarget;
-        return $this;
+        $new = clone $this;
+        $new->requestTarget = $requestTarget;
+        return $new;
     }
 
     public function getMethod(): string
@@ -116,8 +117,9 @@ class Request implements RequestInterface
 
     public function withMethod($method): Request|static
     {
-        $this->method = strtoupper($method);
-        return $this;
+        $new = clone $this;
+        $new->method = strtoupper($method);
+        return $new;
     }
 
     public function getUri(): UriInterface
@@ -131,13 +133,14 @@ class Request implements RequestInterface
             return $this;
         }
 
-        $this->uri = $uri;
+        $new = clone $this;
+        $new->uri = $uri;
 
         if (!$preserveHost) {
-            $this->updateHostFromUri();
+            $new->updateHostFromUri();
         }
 
-        return $this;
+        return $new;
     }
 
     private function updateHostFromUri(): void
